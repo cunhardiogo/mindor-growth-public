@@ -269,53 +269,57 @@ export default function FaturamentoPage() {
               {loading ? (
                 <div className="animate-pulse bg-muted rounded-xl h-full" />
               ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={billingHistoryData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
-                    <XAxis
-                      dataKey="month"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: 'var(--muted-foreground)', fontWeight: 500 }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 12, fill: 'var(--muted-foreground)', fontWeight: 500 }}
-                      tickFormatter={(value) => `R$ ${value/1000}k`}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'var(--card)',
-                        border: '1px solid var(--border)',
-                        borderRadius: '12px',
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                      }}
-                    />
-                    <Legend verticalAlign="top" align="right" height={36} iconType="circle" />
-                    {isAdmin && (
-                      <Line
-                        type="monotone"
-                        dataKey="receita"
-                        name="Receita"
-                        stroke="#22c55e"
-                        strokeWidth={3}
-                        dot={{ r: 4, fill: '#22c55e', strokeWidth: 2, stroke: 'var(--card)' }}
-                        activeDot={{ r: 6, strokeWidth: 0 }}
-                      />
-                    )}
-                    <Line
-                      type="monotone"
-                      dataKey="investimento"
-                      name="Investimento"
-                      stroke="#FE5000"
-                      strokeWidth={3}
-                      dot={{ r: 4, fill: '#FE5000', strokeWidth: 2, stroke: 'var(--card)' }}
-                      activeDot={{ r: 6, strokeWidth: 0 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                <div className="w-full overflow-x-auto overflow-y-hidden pb-4 touch-pan-x min-w-0 h-full">
+                  <div className="min-w-[600px] h-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={billingHistoryData}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
+                        <XAxis
+                          dataKey="month"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 12, fill: 'var(--muted-foreground)', fontWeight: 500 }}
+                        />
+                        <YAxis
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: 12, fill: 'var(--muted-foreground)', fontWeight: 500 }}
+                          tickFormatter={(value) => `R$ ${value/1000}k`}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: 'var(--card)',
+                            border: '1px solid var(--border)',
+                            borderRadius: '12px',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                          }}
+                        />
+                        <Legend verticalAlign="top" align="right" height={36} iconType="circle" />
+                        {isAdmin && (
+                          <Line
+                            type="monotone"
+                            dataKey="receita"
+                            name="Receita"
+                            stroke="#22c55e"
+                            strokeWidth={3}
+                            dot={{ r: 4, fill: '#22c55e', strokeWidth: 2, stroke: 'var(--card)' }}
+                            activeDot={{ r: 6, strokeWidth: 0 }}
+                          />
+                        )}
+                        <Line
+                          type="monotone"
+                          dataKey="investimento"
+                          name="Investimento"
+                          stroke="#FE5000"
+                          strokeWidth={3}
+                          dot={{ r: 4, fill: '#FE5000', strokeWidth: 2, stroke: 'var(--card)' }}
+                          activeDot={{ r: 6, strokeWidth: 0 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -470,26 +474,28 @@ export default function FaturamentoPage() {
             ) : !sales.hasIntegration || sales.topProducts.length === 0 ? (
               <EmptyIntegrationCard message="Integração com sistema de vendas necessária" />
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent border-border">
-                    <TableHead className="text-xs font-bold text-muted-foreground uppercase">#</TableHead>
-                    <TableHead className="text-xs font-bold text-muted-foreground uppercase">Produto</TableHead>
-                    <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Qtd</TableHead>
-                    <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Receita</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sales.topProducts.map((p, i) => (
-                    <TableRow key={p.product_name} className="border-border">
-                      <TableCell className="text-sm font-bold">{i + 1}</TableCell>
-                      <TableCell className="text-sm max-w-[240px] truncate">{p.product_name}</TableCell>
-                      <TableCell className="text-sm font-space text-right">{p.qty}</TableCell>
-                      <TableCell className="text-sm font-space text-right">{formatBRL(p.value)}</TableCell>
+              <div className="w-full overflow-x-auto overflow-y-hidden pb-4 touch-pan-x min-w-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent border-border">
+                      <TableHead className="text-xs font-bold text-muted-foreground uppercase">#</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground uppercase">Produto</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Qtd</TableHead>
+                      <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Receita</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {sales.topProducts.map((p, i) => (
+                      <TableRow key={p.product_name} className="border-border">
+                        <TableCell className="text-sm font-bold">{i + 1}</TableCell>
+                        <TableCell className="text-sm max-w-[240px] truncate">{p.product_name}</TableCell>
+                        <TableCell className="text-sm font-space text-right">{p.qty}</TableCell>
+                        <TableCell className="text-sm font-space text-right">{formatBRL(p.value)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>
@@ -507,25 +513,29 @@ export default function FaturamentoPage() {
           ) : !sales.hasIntegration ? (
             <EmptyIntegrationCard message="Integração com sistema de vendas necessária" />
           ) : (
-            <ResponsiveContainer width="100%" height="100%">
-              <ReBarChart data={sales.byHour}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.4} />
-                <XAxis
-                  dataKey="hour"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
-                  tickFormatter={(h) => `${String(h).padStart(2, '0')}h`}
-                />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)' }}
-                  formatter={(v: number, name: string) => name === 'value' ? formatBRL(v) : v}
-                  labelFormatter={(h) => `Horário ${String(h).padStart(2, '0')}h`}
-                />
-                <Bar dataKey="count" name="Vendas" fill="#FE5000" radius={[6, 6, 0, 0]} />
-              </ReBarChart>
-            </ResponsiveContainer>
+            <div className="w-full overflow-x-auto overflow-y-hidden pb-4 touch-pan-x min-w-0 h-full">
+              <div className="min-w-[500px] h-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ReBarChart data={sales.byHour}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.4} />
+                    <XAxis
+                      dataKey="hour"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
+                      tickFormatter={(h) => `${String(h).padStart(2, '0')}h`}
+                    />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: 'var(--card)', borderRadius: '12px', border: '1px solid var(--border)' }}
+                      formatter={(v: number, name: string) => name === 'value' ? formatBRL(v) : v}
+                      labelFormatter={(h) => `Horário ${String(h).padStart(2, '0')}h`}
+                    />
+                    <Bar dataKey="count" name="Vendas" fill="#FE5000" radius={[6, 6, 0, 0]} />
+                  </ReBarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -542,26 +552,28 @@ export default function FaturamentoPage() {
           ) : !sales.hasIntegration || sales.bySeller.length === 0 ? (
             <EmptyIntegrationCard message="Integração com sistema de vendas necessária" />
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent border-border">
-                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Posição</TableHead>
-                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Vendedor</TableHead>
-                  <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Vendas</TableHead>
-                  <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Valor Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sales.bySeller.map((s, i) => (
-                  <TableRow key={s.seller_id} className="border-border">
-                    <TableCell className="text-sm font-bold">{i + 1}º</TableCell>
-                    <TableCell className="text-sm">{s.seller_name}</TableCell>
-                    <TableCell className="text-sm font-space text-right">{s.count}</TableCell>
-                    <TableCell className="text-sm font-space text-right">{formatBRL(s.value)}</TableCell>
+            <div className="w-full overflow-x-auto overflow-y-hidden pb-4 touch-pan-x min-w-0">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent border-border">
+                    <TableHead className="text-xs font-bold text-muted-foreground uppercase">Posição</TableHead>
+                    <TableHead className="text-xs font-bold text-muted-foreground uppercase">Vendedor</TableHead>
+                    <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Vendas</TableHead>
+                    <TableHead className="text-xs font-bold text-muted-foreground uppercase text-right">Valor Total</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {sales.bySeller.map((s, i) => (
+                    <TableRow key={s.seller_id} className="border-border">
+                      <TableCell className="text-sm font-bold">{i + 1}º</TableCell>
+                      <TableCell className="text-sm">{s.seller_name}</TableCell>
+                      <TableCell className="text-sm font-space text-right">{s.count}</TableCell>
+                      <TableCell className="text-sm font-space text-right">{formatBRL(s.value)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

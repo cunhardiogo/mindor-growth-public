@@ -130,7 +130,7 @@ export default function OverviewPage() {
         </div>
         <div className="flex items-center gap-3">
           <Select value={period} onValueChange={(v) => setPeriod(v as SalesDatePreset)}>
-            <SelectTrigger className="w-[160px] bg-card border-border">
+            <SelectTrigger className="w-[160px] bg-card/60 backdrop-blur-2xl border-border">
               <SelectValue placeholder="Período" />
             </SelectTrigger>
             <SelectContent>
@@ -208,7 +208,7 @@ export default function OverviewPage() {
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ delay: 0.3 + idx * 0.05 }}
               >
-                <Card className="h-full border-border bg-card shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+                <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300">
                   <CardContent className="p-5 flex flex-col justify-between h-full">
                     <div className="flex items-center justify-between mb-3">
                       <div className={`p-2.5 rounded-lg ${isPositive ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
@@ -235,7 +235,7 @@ export default function OverviewPage() {
         transition={{ delay: 0.4 }}
         className="col-span-12 lg:col-span-3"
       >
-        <Card className="h-full border-border bg-card shadow-sm hover:shadow-md transition-all duration-300">
+        <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-normal font-space">Social Awareness</CardTitle>
           </CardHeader>
@@ -270,7 +270,7 @@ export default function OverviewPage() {
         transition={{ delay: 0.5 }}
         className="col-span-12 lg:col-span-6"
       >
-        <Card className="border-border bg-card shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden">
+        <Card className="border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300 relative overflow-hidden">
           <div className="absolute top-6 right-6">
             <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors cursor-pointer">
               <ArrowUpRight className="w-4 h-4" />
@@ -344,7 +344,7 @@ export default function OverviewPage() {
         transition={{ delay: 0.6 }}
         className="col-span-12 lg:col-span-3"
       >
-        <Card className="h-full border-border bg-card shadow-sm hover:shadow-md transition-all duration-300">
+        <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-lg font-normal font-space">Score de Crescimento</CardTitle>
             <span className="inline-flex items-center rounded-full border-none px-2.5 py-0.5 text-xs font-semibold bg-green-500/10 text-green-500">Saudável</span>
@@ -400,7 +400,7 @@ export default function OverviewPage() {
           whileHover={{ y: -5, scale: 1.02 }}
           transition={{ delay: 0.7 }}
         >
-          <Card className="h-full border-border bg-card shadow-sm flex flex-col hover:shadow-md transition-all duration-300">
+          <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm flex flex-col hover:shadow-xl hover:border-primary/40 transition-all duration-300">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg font-normal font-space">Mindor AI Assistant</CardTitle>
               <BrainCircuit className="w-4 h-4 text-primary" />
@@ -448,7 +448,7 @@ export default function OverviewPage() {
           whileHover={{ y: -5, scale: 1.02 }}
           transition={{ delay: 0.8 }}
         >
-          <Card className="h-full border-border bg-card shadow-sm hover:shadow-md transition-all duration-300">
+          <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg font-normal font-space">Distribuição de Capital</CardTitle>
             </CardHeader>
@@ -505,7 +505,7 @@ export default function OverviewPage() {
           whileHover={{ y: -5, scale: 1.02 }}
           transition={{ delay: 0.9 }}
         >
-          <Card className="h-full border-border bg-card shadow-sm hover:shadow-md transition-all duration-300">
+          <Card className="h-full border-border bg-card/60 backdrop-blur-2xl shadow-sm hover:shadow-xl hover:border-primary/40 transition-all duration-300">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg font-normal font-space">Canais de Aquisição</CardTitle>
             </CardHeader>
@@ -548,7 +548,7 @@ export default function OverviewPage() {
         transition={{ delay: 1.0 }}
         className="col-span-12"
       >
-        <Card className="border-border bg-card shadow-sm">
+        <Card className="border-border bg-card/60 backdrop-blur-2xl shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-normal font-space">Vendas por Forma de Pagamento</CardTitle>
             <p className="text-xs text-muted-foreground uppercase tracking-wide">Distribuição no período</p>

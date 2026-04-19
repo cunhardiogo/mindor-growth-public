@@ -264,58 +264,60 @@ export default function ClientesPage() {
           </Button>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-xs font-bold text-muted-foreground uppercase">Nome</TableHead>
-                <TableHead className="text-xs font-bold text-muted-foreground uppercase">Meta Ads ID</TableHead>
-                <TableHead className="text-xs font-bold text-muted-foreground uppercase">Instagram ID</TableHead>
-                <TableHead className="text-xs font-bold text-muted-foreground uppercase">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {clients.length === 0 ? (
+          <div className="w-full overflow-x-auto overflow-y-hidden pb-4 touch-pan-x min-w-0">
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-muted-foreground text-sm py-8">
-                    Nenhum cliente cadastrado.
-                  </TableCell>
+                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Nome</TableHead>
+                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Meta Ads ID</TableHead>
+                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Instagram ID</TableHead>
+                  <TableHead className="text-xs font-bold text-muted-foreground uppercase">Status</TableHead>
                 </TableRow>
-              ) : (
-                clients.map((client) => (
-                  <TableRow
-                    key={client.id}
-                    onClick={() => setSelectedClient(client)}
-                    className="hover:bg-muted/50 transition-colors cursor-pointer"
-                  >
-                    <TableCell className="font-normal font-space">{client.name ?? '–'}</TableCell>
-                    <TableCell className="font-mono text-xs text-muted-foreground">
-                      {client.act_id ? (
-                        <span className="truncate max-w-[120px] block">{client.act_id}</span>
-                      ) : (
-                        <Badge variant="outline" className="text-[9px] border-orange-500/20 text-orange-500">Não configurado</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell className="font-mono text-xs text-muted-foreground">
-                      {client.ig_user_id ? (
-                        <span className="truncate max-w-[120px] block">{client.ig_user_id}</span>
-                      ) : (
-                        <Badge variant="outline" className="text-[9px] border-orange-500/20 text-orange-500">Não configurado</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={`text-[9px] font-bold border-none ${
-                        client.status === 1
-                          ? 'bg-green-500/10 text-green-500'
-                          : 'bg-orange-500/10 text-orange-500'
-                      }`}>
-                        {client.status === 1 ? 'Ativo' : 'Inativo'}
-                      </Badge>
+              </TableHeader>
+              <TableBody>
+                {clients.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center text-muted-foreground text-sm py-8">
+                      Nenhum cliente cadastrado.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  clients.map((client) => (
+                    <TableRow
+                      key={client.id}
+                      onClick={() => setSelectedClient(client)}
+                      className="hover:bg-muted/50 transition-colors cursor-pointer"
+                    >
+                      <TableCell className="font-normal font-space">{client.name ?? '–'}</TableCell>
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        {client.act_id ? (
+                          <span className="truncate max-w-[120px] block">{client.act_id}</span>
+                        ) : (
+                          <Badge variant="outline" className="text-[9px] border-orange-500/20 text-orange-500">Não configurado</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        {client.ig_user_id ? (
+                          <span className="truncate max-w-[120px] block">{client.ig_user_id}</span>
+                        ) : (
+                          <Badge variant="outline" className="text-[9px] border-orange-500/20 text-orange-500">Não configurado</Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={`text-[9px] font-bold border-none ${
+                          client.status === 1
+                            ? 'bg-green-500/10 text-green-500'
+                            : 'bg-orange-500/10 text-orange-500'
+                        }`}>
+                          {client.status === 1 ? 'Ativo' : 'Inativo'}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { fetchMetaInsights, fetchMetaInsightsTimeSeries } from '../lib/metaApi'
 
 interface Params {
@@ -11,38 +11,25 @@ interface Params {
 }
 
 export function useMetaInsightsLive({ accountId, level, datePreset, since, until, breakdown }: Params) {
-  const [data, setData] = useState<any[]>([])
-  const [timeSeries, setTimeSeries] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const controllerRef = useRef<AbortController | null>(null)
-
-  const load = useCallback(async () => {
-    if (!accountId) return
-    controllerRef.current?.abort()
-    const controller = new AbortController()
-    controllerRef.current = controller
-    setLoading(true)
-    setError(null)
-    try {
+  const query = useQuery({
+    queryKey: ['metaInsights', accountId, level, datePreset, since, until, breakdown],
+    queryFn: async ({ signal }) => {
+      if (!accountId) throw new Error('No account ID')
       const [rows, series] = await Promise.all([
-        fetchMetaInsights({ accountId, level, datePreset, since, until, breakdown }, controller.signal),
-        fetchMetaInsightsTimeSeries({ accountId, level, datePreset, since, until }, controller.signal),
+        fetchMetaInsights({ accountId, level, datePreset, since, until, breakdown }, signal),
+        fetchMetaInsightsTimeSeries({ accountId, level, datePreset, since, until }, signal),
       ])
-      setData(rows)
-      setTimeSeries(series)
-    } catch (err: any) {
-      if (err.name === 'AbortError') return
-      setError(err.message)
-    } finally {
-      if (controllerRef.current === controller) setLoading(false)
-    }
-  }, [accountId, level, datePreset, since, until, breakdown])
+      return { rows, series }
+    },
+    enabled: !!accountId,
+    staleTime: 5 * 60 * 1000,
+  })
 
-  useEffect(() => {
-    load()
-    return () => { controllerRef.current?.abort() }
-  }, [load])
-
-  return { data, timeSeries, loading, error, refetch: load }
+  return {
+    data: query.data?.rows ?? [],
+    timeSeries: query.data?.series ?? [],
+    loading: query.isFetching,
+    error: query.error ? query.error.message : null,
+    refetch: async () => { await query.refetch() }
+  }
 }

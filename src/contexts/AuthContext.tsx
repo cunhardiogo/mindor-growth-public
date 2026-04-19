@@ -68,15 +68,7 @@ function clearSbKeys() {
   }
 }
 
-function setAnchors(uid: string) {
-  sessionStorage.setItem('mindor_tab_uid', uid)
-  localStorage.setItem('mindor_uid', uid)
-}
 
-function clearAnchors() {
-  sessionStorage.removeItem('mindor_tab_uid')
-  localStorage.removeItem('mindor_uid')
-}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<AuthProfile | null>(null)
@@ -113,41 +105,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               }
               return
             }
-
-            // Remember-me check
-            const noRemember = localStorage.getItem('mindor_remember') === 'false'
-            const tabAlive = sessionStorage.getItem('mindor_tab') === '1'
-            if (noRemember && !tabAlive) {
-              await supabase.auth.signOut()
-              setAuthenticated(false)
-              return
-            }
-
-            // Cross-session guard: verify the JWT belongs to the correct user for this tab.
-            // sessionStorage persists through F5 but is isolated per tab.
-            // localStorage persists across browser restarts.
-            const tabUid = sessionStorage.getItem('mindor_tab_uid')
-            const localUid = localStorage.getItem('mindor_uid')
-
-            if (tabUid && tabUid !== uid) {
-              // F5: a different user's session leaked into localStorage (cross-tab login)
-              clearSbKeys()
-              setAuthenticated(false)
-              return
-            }
-            if (!tabUid && localUid && localUid !== uid) {
-              // Fresh browser open: wrong user's JWT in storage
-              clearSbKeys()
-              setAuthenticated(false)
-              return
-            }
-          }
-
-          if (event === 'SIGNED_IN') {
-            // Supabase broadcasts SIGNED_IN to all open tabs when any tab logs in.
-            // If another tab signed in as a different user, ignore the event here.
-            const tabUid = sessionStorage.getItem('mindor_tab_uid')
-            if (tabUid && tabUid !== uid) return
           }
 
           setAuthenticated(true)
@@ -163,7 +120,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 return
               }
               if (p) {
-                setAnchors(uid)
                 setProfile(p)
               }
             } catch { /* network error — stay authenticated, profile stays null */ }
@@ -189,14 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase.auth.signOut()
         return { error: 'Perfil não encontrado. Contate o administrador.' }
       }
-      if (remember) {
-        localStorage.removeItem('mindor_remember')
-        sessionStorage.removeItem('mindor_tab')
-      } else {
-        localStorage.setItem('mindor_remember', 'false')
-        sessionStorage.setItem('mindor_tab', '1')
-      }
-      setAnchors(data.user.id)
+
       setAuthenticated(true)
       setProfile(p)
       setLoading(false)
@@ -205,9 +154,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = async () => {
-    localStorage.removeItem('mindor_remember')
-    sessionStorage.removeItem('mindor_tab')
-    clearAnchors()
+
     clearSbKeys()
     setAuthenticated(false)
     setProfile(null)

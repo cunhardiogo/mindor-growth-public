@@ -22,6 +22,16 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss()],
     build: {
       chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) return 'react-vendor';
+            if (id.includes('node_modules/recharts') || id.includes('node_modules/d3')) return 'charts-vendor';
+            if (id.includes('node_modules/@supabase')) return 'supabase-vendor';
+            if (id.includes('node_modules/lucide-react')) return 'icons-vendor';
+          }
+        }
+      }
     },
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),

@@ -311,7 +311,7 @@ export default function AppShell() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-4 md:p-8 pt-20 md:pt-24">
+      <main className="flex-1 overflow-y-auto p-4 md:p-10 lg:p-12 pt-20 md:pt-24 min-w-0">
         {/* Header */}
         <motion.header
           initial={{ y: -20, opacity: 0 }}
